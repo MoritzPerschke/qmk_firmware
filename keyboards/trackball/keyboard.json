@@ -11,7 +11,7 @@
         "console": false,
         "extrakey": true,
         "mousekey": true,
-        "nkro": false
+        "nkro": true
     },
     "usb": {
         "vid": "0x5A69",
