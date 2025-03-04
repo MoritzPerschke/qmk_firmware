@@ -9,16 +9,20 @@
 
 enum custom_layer {
     MOUSE,
-    ALT
+    ALT,
+    MOUSE_ALT
 };
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [MOUSE] = LAYOUT(
-        KC_BTN1, LT(ALT, KC_BTN2), KC_BTN3, KC_WH_D, KC_WH_U
+        KC_BTN1, LT(ALT, KC_BTN2), KC_BTN3, KC_BTN4, TG(ALT)
     ),
     [ALT] = LAYOUT(
-        KC_BTN1, KC_BTN2, KC_BTN4, KC_BTN5, KC_A
-    )
+        KC_BTN1, LT(MOUSE_ALT, KC_BTN2), KC_BTN4, KC_BTN5, TG(ALT)
+    ),
+    [MOUSE_ALT] = LAYOUT(
+        KC_BTN1, KC_BTN2, KC_BTN3, KC_BTN4, TG(ALT)
+    ),
 };
 
 #if defined(ENCODER_ENABLE) && defined(ENCODER_MAP_ENABLE)
@@ -34,8 +38,8 @@ float scroll_accumulated_v = 0;
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     // Check if SCROLL layer is active
     if (IS_LAYER_ON(ALT)) {
-        scroll_accumulated_h += (float)mouse_report.x / SCROLL_DIVISOR_H;
-        scroll_accumulated_v += (float)mouse_report.x / SCROLL_DIVISOR_V;
+        scroll_accumulated_h += (float)mouse_report.x / SCROLL_DIVISOR;
+        scroll_accumulated_v -= (float)mouse_report.y / SCROLL_DIVISOR;
 
         mouse_report.h = (int8_t)scroll_accumulated_h;
         mouse_report.v = (int8_t)scroll_accumulated_v;
