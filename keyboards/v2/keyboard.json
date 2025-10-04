@@ -1,0 +1,91 @@
+{
+    "manufacturer": "Moritz",
+    "url": "https://github.com/siderakb/pmw3360-pcb",
+    "maintainer": "Moritz",
+    "keyboard_name": "Cosmos_Trackball",
+    "processor": "RP2040",
+    "bootloader": "rp2040",
+    "features": {
+        "bootmagic": true,
+        "extrakey": true,
+        "mousekey": true,
+        "nkro": true
+    },
+    "usb": {
+        "vid": "0x5A69",
+        "pid": "0x3360",
+        "device_version": "1.0.0"
+    },
+    "diode_direction": "ROW2COL",
+    "split": {
+        "enabled": true,
+        "serial": {
+            "pin": "GP1"
+        }
+    },
+    "matrix_pins": {
+        // needs one more, otherwise 4 thumb keys map to only two firmware keys
+        "rows": ["GP10","GP11","GP12","GP13"]
+        "cols": [ "GP4", "GP5", "GP6", "GP7", "GP8", "GP9"]
+    },
+    "layouts": {
+        "LAYOUT": {
+            "layout": [
+
+                /* First row */
+                {"matrix": [0, 0], "x": 0, "y": 0},
+                {"matrix": [0, 1], "x": 1, "y": 0},
+                {"matrix": [0, 2], "x": 2, "y": 0},
+                {"matrix": [0, 3], "x": 3, "y": 0},
+                {"matrix": [0, 4], "x": 4, "y": 0},
+                {"matrix": [0, 5], "x": 5, "y": 0},
+
+                {"matrix": [6, 0], "x": 11, "y": 0},
+                {"matrix": [6, 1], "x": 12, "y": 0},
+                {"matrix": [6, 2], "x": 13, "y": 0},
+                {"matrix": [6, 3], "x": 14, "y": 0},
+                {"matrix": [6, 4], "x": 15, "y": 0},
+                {"matrix": [6, 5], "x": 16, "y": 0},
+
+                /* Second row */
+                {"matrix": [1, 0], "x": 0, "y": 1},
+                {"matrix": [1, 1], "x": 1, "y": 1},
+                {"matrix": [1, 2], "x": 2, "y": 1},
+                {"matrix": [1, 3], "x": 3, "y": 1},
+                {"matrix": [1, 4], "x": 4, "y": 1},
+                {"matrix": [1, 5], "x": 5, "y": 1},
+
+                {"matrix": [7, 0], "x": 11, "y": 1},
+                {"matrix": [7, 1], "x": 12, "y": 1},
+                {"matrix": [7, 2], "x": 13, "y": 1},
+                {"matrix": [7, 3], "x": 14, "y": 1},
+                {"matrix": [7, 4], "x": 15, "y": 1},
+                {"matrix": [7, 5], "x": 16, "y": 1},
+
+                /* Third row */
+                {"matrix": [2, 0], "x": 0, "y": 2},
+                {"matrix": [2, 1], "x": 1, "y": 2},
+                {"matrix": [2, 2], "x": 2, "y": 2},
+                {"matrix": [2, 3], "x": 3, "y": 2},
+                {"matrix": [2, 4], "x": 4, "y": 2},
+                {"matrix": [2, 5], "x": 5, "y": 2},
+
+                {"matrix": [8, 0], "x": 11, "y": 2},
+                {"matrix": [8, 1], "x": 12, "y": 2},
+                {"matrix": [8, 2], "x": 13, "y": 2},
+                {"matrix": [8, 3], "x": 14, "y": 2},
+                {"matrix": [8, 4], "x": 15, "y": 2},
+                {"matrix": [8, 5], "x": 16, "y": 2},
+
+                /* Left Thumb Cluster */
+                {"matrix": [3, 3], "x": 2, "y": 3.5},
+                {"matrix": [3, 3], "x": 2, "y": 3.5},
+                {"matrix": [3, 4], "x": 2, "y": 3.5},
+                {"matrix": [3, 5], "x": 2, "y": 3.5},
+                {"matrix": [3, 6], "x": 2, "y": 3.5},
+
+                /* Right Thumb Cluster */
+            ]
+        }
+    }
+}
