@@ -25,7 +25,7 @@
     },
     "matrix_pins": {
         // needs one more, otherwise 4 thumb keys map to only two firmware keys
-        "rows": ["GP10","GP11","GP12","GP13"]
+        "rows": ["GP10","GP11","GP12","GP13", "GP14"]
         "cols": [ "GP4", "GP5", "GP6", "GP7", "GP8", "GP9"]
     },
     "layouts": {
@@ -79,12 +79,15 @@
 
                 /* Left Thumb Cluster */
                 {"matrix": [3, 3], "x": 2, "y": 3.5},
-                {"matrix": [3, 3], "x": 2, "y": 3.5},
                 {"matrix": [3, 4], "x": 2, "y": 3.5},
                 {"matrix": [3, 5], "x": 2, "y": 3.5},
-                {"matrix": [3, 6], "x": 2, "y": 3.5},
+                {"matrix": [4, 4], "x": 2, "y": 3.5},
+                {"matrix": [4, 5], "x": 3, "y": 3.5},
 
                 /* Right Thumb Cluster */
+                {"matrix": [9, 3], "x": 16, "y": 2},
+                {"matrix": [9, 4], "x": 16, "y": 2},
+                {"matrix": [9, 5], "x": 16, "y": 2},
             ]
         }
     }
