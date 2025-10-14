@@ -1,8 +1,14 @@
 #pragma once
+
+#define SOFT_SERIAL_PIN GP1
+#define MASTER_LEFT
+#define SPLIT_POINTING_ENABLE
+
 // https://github.com/siderakb/pmw3360-pcb/blob/main/firmware/qmk/pmw3360_rp2040/info.json
 // https://cdn.discordapp.com/attachments/1114846164907479139/1319383503267434546/Dactyl_Wiring.png?ex=67929624&is=679144a4&hm=6c93f193418ef5bcca5a433b0bf0fa8531384d25ff862bf3e85eb4aa7b195b6b&
 // QMK uses hardware SPI, can't redefine these pins
 
+#define POINTING_DEVICE_RIGHT
 #define PMW33XX_CS_PIN GP21
 #define SPI_SCK_PIN GP18
 #define SPI_MOSI_PIN GP19
@@ -12,8 +18,6 @@
 #define POINTING_DEVICE_ROTATION_90
 #define POINTING_DEVICE_INVERT_X
 #define ROTATIONAL_TRANSFORM_ANGLE 45
-
-#define MASTER_LEFT
 
 #define MOUSEKEY_MOVE_DELTA 6
 #define MOUSEKEY_DELAY 11

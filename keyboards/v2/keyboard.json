@@ -9,6 +9,7 @@
         "bootmagic": true,
         "extrakey": true,
         "mousekey": true,
+        "console": true,
         "nkro": true
     },
     "usb": {
@@ -19,12 +20,9 @@
     "diode_direction": "ROW2COL",
     "split": {
         "enabled": true,
-        "serial": {
-            "pin": "GP1"
-        }
+        "soft_serial_pin": "GP1"
     },
     "matrix_pins": {
-        // needs one more, otherwise 4 thumb keys map to only two firmware keys
         "rows": ["GP10","GP11","GP12","GP13", "GP14"]
         "cols": [ "GP4", "GP5", "GP6", "GP7", "GP8", "GP9"]
     },

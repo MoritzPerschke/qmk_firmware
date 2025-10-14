@@ -1,3 +1,6 @@
+SPLIT_KEYBOARD = yes
+SERIAL_DRIVER = vendor
+
 POINTING_DEVICE_ENABLE = yes
 POINTING_DEVICE_DRIVER = pmw3360
 
@@ -6,7 +9,4 @@ F_CPU = 8000000
 # External oscillator is 16Mhz
 F_USB = 16000000
 
-SPLIT_KEYBOARD = yes
-
-SERIAL_DRIVER = vendor
 CONSOLE_ENABLE = yes
