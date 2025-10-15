@@ -9,4 +9,4 @@ F_CPU = 8000000
 # External oscillator is 16Mhz
 F_USB = 16000000
 
-CONSOLE_ENABLE = yes
+CAPS_WORD_ENABLE = yes
