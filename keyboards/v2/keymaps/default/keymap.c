@@ -19,42 +19,64 @@ void pointing_device_init_user(void) {
     set_auto_mouse_enable(true);
 }
 
-// https://docs.qmk.fm/features/pointing_device#drag-scroll-or-mouse-scroll
 enum custom_keycodes {
     SCROLL = SAFE_RANGE,
+    TOGGLE_SCROLL,
 };
-bool set_scrolling = false;
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == SCROLL && record->event.pressed) {
-        set_scrolling = true;
-    }
-    return true;
-}
-// https://docs.qmk.fm/features/pointing_device#advanced-drag-scroll
+bool set_scrolling = false;
+bool toggle_scrolling = false;
+
+// Modify these values to adjust the scrolling speed
+#define SCROLL_DIVISOR_H 9.0
+#define SCROLL_DIVISOR_V 9.0
+
+// Variables to store accumulated scroll values
 float scroll_accumulated_h = 0;
 float scroll_accumulated_v = 0;
 
+// Function to handle mouse reports and perform drag scrolling
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-    if (set_scrolling) {
-        mouse_report.h = mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;
+    // Check if drag scrolling is active
+    if (set_scrolling || toggle_scrolling) {
+        // Calculate and accumulate scroll values based on mouse movement and divisors
+        scroll_accumulated_h += -(float)mouse_report.x / SCROLL_DIVISOR_H;
+        scroll_accumulated_v += (float)mouse_report.y / SCROLL_DIVISOR_V;
 
-        scroll_accumulated_h += (float)mouse_report.x / SCROLL_DIVISOR;
-        scroll_accumulated_v -= (float)mouse_report.y / SCROLL_DIVISOR;
-
+        // Assign integer parts of accumulated scroll values to the mouse report
         mouse_report.h = (int8_t)scroll_accumulated_h;
         mouse_report.v = (int8_t)scroll_accumulated_v;
 
+        // Update accumulated scroll values by subtracting the integer parts
         scroll_accumulated_h -= (int8_t)scroll_accumulated_h;
         scroll_accumulated_v -= (int8_t)scroll_accumulated_v;
 
+        // Clear the X and Y values of the mouse report
         mouse_report.x = 0;
         mouse_report.y = 0;
     }
-    return mouse_report; // Pass the modified report to QMK for further processing
+    return mouse_report;
+}
+
+// Function to handle key events and enable/disable drag scrolling
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == SCROLL && record->event.pressed) {
+        set_scrolling = true;
+    } else if (keycode == TOGGLE_SCROLL && record->event.pressed) {
+        toggle_scrolling = !toggle_scrolling;
+    } else if (set_scrolling == true) {
+        set_scrolling = false;
+    }
+    return true;
+}
+
+// Function to handle layer changes and disable drag scrolling when not in AUTO_MOUSE_DEFAULT_LAYER
+layer_state_t layer_state_set_user(layer_state_t state) {
+    // Disable set_scrolling if the current layer is not the AUTO_MOUSE_DEFAULT_LAYER
+    if (get_highest_layer(state) != AUTO_MOUSE_DEFAULT_LAYER) {
+        set_scrolling = false;
+    }
+    return state;
 }
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -67,9 +89,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [NAV] = LAYOUT(
-        KC_TRNS, KC_ESC,  KC_PGUP, KC_UP,   KC_PGDN, KC_TRNS,    /**/    KC_PAST, KC_P7,    KC_P8,   KC_P9,   KC_MINS, KC_NUM,
-        KC_TRNS, KC_HOME, KC_LEFT, KC_DOWN, KC_RIGHT, KC_END,    /**/    KC_PSLS, KC_P4,    KC_P5,   KC_P6,   KC_PPLS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_PEQL, KC_P1,    KC_P2,   KC_P3,   KC_P0,   KC_TRNS,
+        KC_TRNS, KC_ESC,  KC_PGUP, KC_UP,   KC_PGDN, KC_TRNS,    /**/    KC_PAST, KC_7,    KC_8,   KC_9,   KC_MINS, KC_NUM,
+        KC_TRNS, KC_HOME, KC_LEFT, KC_DOWN, KC_RIGHT, KC_END,    /**/    KC_PSLS, KC_4,    KC_5,   KC_6,   KC_PPLS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_PEQL, KC_1,    KC_2,   KC_3,   KC_0,   KC_TRNS,
                                    KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, KC_PCMM,  KC_PDOT,
 		                      	   KC_TRNS, KC_TRNS
     ),
@@ -91,9 +113,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [MOUSE] = LAYOUT(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, MS_BTN4, MS_BTN5, KC_TRNS, MS_WHLU, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, MS_BTN1, MS_BTN2, MS_BTN3, MS_WHLD, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, SCROLL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, MS_BTN4, MS_BTN3, MS_BTN5, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    TG(MOUSE), MS_BTN1, MS_BTN2, MS_BTN3, MS_WHLD, MS_WHLU,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, SCROLL, TOGGLE_SCROLL, KC_TRNS, KC_TRNS, KC_TRNS,
                                    KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, KC_TRNS, KC_TRNS,
 		                      	   KC_TRNS, KC_TRNS
     )

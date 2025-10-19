@@ -26,6 +26,6 @@
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 #define AUTO_MOUSE_TIME 500 // default 650
 #define AUTO_MOUSE_DELAY 500 //default 200
-#define AUTO_MOUSE_THRESHOLD 20 // default 10
+#define AUTO_MOUSE_THRESHOLD 10 // default 10
 
 #define SCROLL_DIVISOR 75.0
