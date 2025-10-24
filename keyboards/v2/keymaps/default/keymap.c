@@ -7,11 +7,15 @@
 #endif
 
 enum custom_layer {
-    BASE,
+    DEFAULT,
     NAV,
     SYM,
     FUNC,
     MOUSE,
+    WASD,
+    WASD_AUX,
+    LEAGUE,
+    LEAGUE_AUX,
 };
 
 void pointing_device_init_user(void) {
@@ -75,12 +79,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     // Disable set_scrolling if the current layer is not the AUTO_MOUSE_DEFAULT_LAYER
     if (get_highest_layer(state) != AUTO_MOUSE_DEFAULT_LAYER) {
         set_scrolling = false;
+        // uncomment if scrolling should reset on mouse layer release
+        // toggle_scrolling = false;
     }
     return state;
 }
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    [BASE] = LAYOUT(
+    [DEFAULT] = LAYOUT(
         QK_GESC, KC_Q,    KC_W,   KC_E,    KC_R,             KC_T,                            /**/    KC_Y,    KC_U,    KC_I,     KC_O,   KC_P,         KC_BSLS,
         KC_LSFT, KC_A,    KC_S,   KC_D,    KC_F,             KC_G,                            /**/    KC_H,    KC_J,    KC_K,     KC_L,   KC_SEMICOLON, KC_RSFT,
         KC_LCTL, KC_Z,    KC_X,   KC_C,    KC_V,             KC_B,                            /**/    KC_N,    KC_M,    KC_COMMA, KC_DOT, KC_SLASH,     KC_RCTL,
@@ -99,14 +105,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [SYM] = LAYOUT(
          KC_TRNS, KC_EXLM, KC_AT,   KC_HASH,      KC_DLR,  KC_PERCENT,    /**/   KC_CIRC, KC_AMPR, KC_ASTR,   KC_UNDS, KC_EQUAL, KC_TRNS,
          KC_TRNS, KC_MINS, KC_LBRC, KC_LCBR,      KC_LPRN, KC_LT,         /**/   KC_GT,   KC_RPRN, KC_RCBR,   KC_RBRC,  KC_PLUS,  KC_TRNS,
-         KC_TRNS, KC_CAPS, KC_GRV,  C(S(KC_TAB)), KC_TRNS, CW_TOGG,       /**/   KC_TRNS, KC_TRNS, C(KC_TAB), KC_TRNS,  KC_TRNS,  KC_TRNS,
+         KC_TRNS, KC_CAPS, KC_GRV,  C(S(KC_TAB)), C(S(KC_T)), CW_TOGG,    /**/   KC_TRNS, C(KC_T), C(KC_TAB), KC_TRNS,  KC_TRNS,  C(KC_W),
                                     KC_TRNS,      KC_TRNS, KC_TRNS,       /**/   KC_TRNS, KC_TRNS, KC_TRNS,
 		                      	                  KC_TRNS, KC_TRNS
     ),
 
     [FUNC] = LAYOUT(
         QK_BOOT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_MUTE, KC_F7, KC_F8, KC_F9, KC_F10, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_VOLU, KC_F4, KC_F5, KC_F6, KC_F11, KC_TRNS,
+        KC_TRNS, TG(WASD), TG(LEAGUE), KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_VOLU, KC_F4, KC_F5, KC_F6, KC_F11, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_VOLD, KC_F1, KC_F2, KC_F3, KC_F12, KC_TRNS,
                                    KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_MPRV, KC_MPLY, KC_MNXT,
 		                      	   KC_TRNS, KC_TRNS
@@ -118,6 +124,38 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, SCROLL, TOGGLE_SCROLL, KC_TRNS, KC_TRNS, KC_TRNS,
                                    KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, KC_TRNS, KC_TRNS,
 		                      	   KC_TRNS, KC_TRNS
+    ),
+
+    [WASD] = LAYOUT(
+        KC_T, KC_TAB,  KC_Q,    KC_W,   KC_E,    KC_R,       /**/    KC_T,        KC_Y,    KC_U,    KC_I,     KC_O,   KC_P,
+        KC_G, KC_LSFT, KC_A,    KC_S,   KC_D,    KC_F,       /**/    KC_G,        KC_H,    KC_J,    KC_K,     KC_L,   KC_SEMICOLON,
+        KC_B, KC_LCTL, KC_Z,    KC_X,   KC_C,    KC_V,       /**/    KC_B,        KC_N,    KC_M,    KC_COMMA, KC_DOT, KC_SLASH,
+                  LT(WASD_AUX, KC_ESC), KC_SPC,  KC_RCTL,    /**/    TG(WASD), KC_SPC,  KC_QUOT,
+		                    	KC_LGUI, KC_LALT
+    ),
+
+    [WASD_AUX] = LAYOUT(
+        QK_GESC, KC_Q,    KC_W,   KC_E,    KC_R,   KC_T,       /**/    KC_Y,    KC_U,    KC_I,     KC_O,   KC_P,         KC_BSLS,
+        KC_LSFT, KC_A,    KC_S,   KC_D,    KC_F,   KC_G,       /**/    KC_H,    KC_J,    KC_K,     KC_L,   KC_SEMICOLON, KC_RSFT,
+        KC_LCTL, KC_Z,    KC_X,   KC_C,    KC_V,   KC_B,       /**/    KC_N,    KC_M,    KC_COMMA, KC_DOT, KC_SLASH,     KC_RCTL,
+                                  KC_DEL,  KC_ENT, KC_TAB,     /**/    KC_BSPC, KC_SPC,  KC_QUOT,
+		                      	  KC_LGUI, KC_LALT
+    ),
+
+    [LEAGUE] = LAYOUT(
+        KC_ESC, KC_1, KC_2, KC_3, KC_4,   KC_5,    /**/    KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TAB, KC_Q, KC_W, KC_E, KC_R,   KC_T,    /**/    KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_B,   KC_A, KC_S, KC_D, KC_F,   KC_G,    /**/    KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                  MO(LEAGUE_AUX), KC_SPC, KC_TAB,  /**/    TG(LEAGUE), KC_TRNS, KC_TRNS,
+		                    KC_TRNS, KC_TRNS
+    ),
+
+    [LEAGUE_AUX] = LAYOUT(
+        KC_TRNS, KC_F1,  KC_F2,   KC_F3,   KC_F4,   KC_F5,      /**/    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TAB, C(KC_Q), C(KC_W), C(KC_E), C(KC_R), KC_T,       /**/    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_P,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_G,       /**/    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                                  KC_TRNS, KC_TRNS, KC_TRNS,    /**/    KC_TRNS, KC_TRNS, KC_TRNS,
+		                          KC_TRNS, KC_TRNS
     )
 
 };
