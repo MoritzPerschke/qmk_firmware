@@ -96,9 +96,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [DEFAULT] = LAYOUT(
-        QK_GESC, KC_Q,    KC_W,   KC_E,    KC_R,             KC_T,                            /**/    KC_Y,    KC_U,    KC_I,     KC_O,   KC_P,         LT(MOUSE, KC_BSLS),
-        KC_LSFT, KC_A,    KC_S,   KC_D,    KC_F,             KC_G,                            /**/    KC_H,    KC_J,    KC_K,     KC_L,   KC_SEMICOLON, KC_RSFT,
-        KC_LCTL, KC_Z,    KC_X,   KC_C,    KC_V,             KC_B,                            /**/    KC_N,    KC_M,    KC_COMMA, KC_DOT, KC_SLASH,     KC_RCTL,
+        QK_GESC, KC_Q,    KC_W,   KC_E,    KC_R,             KC_T,                            /**/    KC_Y,    KC_U,    KC_I,     KC_O,   LT(MOUSE, KC_P), KC_BSLS,
+        KC_LSFT, KC_A,    KC_S,   KC_D,    KC_F,             KC_G,                            /**/    KC_H,    KC_J,    KC_K,     KC_L,   KC_SEMICOLON,    KC_RSFT,
+        KC_LCTL, KC_Z,    KC_X,   KC_C,    KC_V,             KC_B,                            /**/    KC_N,    KC_M,    KC_COMMA, KC_DOT, KC_SLASH,        KC_RCTL,
                                   LT(MOUSE, KC_DEL),  LT(NAV, KC_ENT),  LT(FUNC, KC_TAB),     /**/    KC_BSPC, LT(SYM, KC_SPC),  KC_QUOT,
 		                      	  KC_LGUI, KC_LALT
     ),
