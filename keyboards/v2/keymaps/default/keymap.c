@@ -42,7 +42,7 @@ float scroll_accumulated_v = 0;
 // Function to handle mouse reports and perform drag scrolling
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     // Check if drag scrolling is active
-    if (set_scrolling || toggle_scrolling) {
+    if (toggle_scrolling ^ set_scrolling) {
         // Calculate and accumulate scroll values based on mouse movement and divisors
         scroll_accumulated_h += -(float)mouse_report.x / SCROLL_DIVISOR_H;
         scroll_accumulated_v += (float)mouse_report.y / SCROLL_DIVISOR_V;
@@ -64,12 +64,21 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 
 // Function to handle key events and enable/disable drag scrolling
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == SCROLL && record->event.pressed) {
-        set_scrolling = true;
-    } else if (keycode == TG_SCRL && record->event.pressed) {
-        toggle_scrolling = !toggle_scrolling;
-    } else if (set_scrolling == true) {
-        set_scrolling = false;
+    switch (keycode) {
+        case SCROLL:
+            if (record->event.pressed == true) {
+                set_scrolling = true;
+            } else {
+                set_scrolling = false;
+            }
+            return false;
+        case TG_SCRL:
+            if (record->event.pressed == true) {
+                toggle_scrolling = !toggle_scrolling;
+            }
+            return false;
+        default:
+            break;
     }
     return true;
 }
